@@ -1,0 +1,132 @@
+name: Qualify Audit source
+run-name: Qualify audit at ${{ inputs.expected_source_sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_source_sha:
+        description: Full commit SHA of the selected Audit ref
+        type: string
+        required: true
+      source_controller_sha:
+        description: Full commit SHA of flowai-source-controller
+        type: string
+        required: true
+      task_manager_sha:
+        description: Full commit SHA of flowai-task-manager
+        type: string
+        required: true
+      team_registry_sha:
+        description: Full commit SHA of flowai-team-registry
+        type: string
+        required: true
+      flow_registry_sha:
+        description: Full commit SHA of flowai-flow-registry
+        type: string
+        required: true
+      model_registry_sha:
+        description: Full commit SHA of flowai-model-registry
+        type: string
+        required: true
+      env_registry_sha:
+        description: Full commit SHA of flowai-env-registry
+        type: string
+        required: true
+      executor_registry_sha:
+        description: Full commit SHA of flowai-executor-registry
+        type: string
+        required: true
+      admin_panel_sha:
+        description: Full commit SHA of flowai-admin-panel
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+      GOWORK: 'off'
+      GOTOOLCHAIN: local
+      SOURCE_CONTROLLER_SHA: ${{ inputs.source_controller_sha }}
+      TASK_MANAGER_SHA: ${{ inputs.task_manager_sha }}
+      TEAM_REGISTRY_SHA: ${{ inputs.team_registry_sha }}
+      FLOW_REGISTRY_SHA: ${{ inputs.flow_registry_sha }}
+      MODEL_REGISTRY_SHA: ${{ inputs.model_registry_sha }}
+      ENV_REGISTRY_SHA: ${{ inputs.env_registry_sha }}
+      EXECUTOR_REGISTRY_SHA: ${{ inputs.executor_registry_sha }}
+      ADMIN_PANEL_SHA: ${{ inputs.admin_panel_sha }}
+
+    steps:
+      - name: Verify dispatch SHAs
+        shell: bash
+        run: |
+          for name in EXPECTED_SOURCE_SHA SOURCE_CONTROLLER_SHA TASK_MANAGER_SHA TEAM_REGISTRY_SHA FLOW_REGISTRY_SHA MODEL_REGISTRY_SHA ENV_REGISTRY_SHA EXECUTOR_REGISTRY_SHA ADMIN_PANEL_SHA; do
+            if [[ ! "${!name}" =~ ^[0-9a-f]{40}$ ]]; then
+              echo "$name must be a full lowercase hexadecimal commit SHA." >&2
+              exit 1
+            fi
+          done
+          if [[ "$GITHUB_SHA" != "$EXPECTED_SOURCE_SHA" ]]; then
+            echo 'The dispatch ref does not resolve to expected_source_sha.' >&2
+            exit 1
+          fi
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Verify checkout and stage pinned publisher schemas
+        shell: bash
+        run: |
+          if [[ "$(git rev-parse HEAD)" != "$EXPECTED_SOURCE_SHA" ]]; then
+            echo 'The checkout does not match expected_source_sha.' >&2
+            exit 1
+          fi
+          if [[ ! -f go.mod || ! -f qualification/stage-contracts.py ]]; then
+            echo 'Dispatch on the reviewed standalone candidate branch.' >&2
+            exit 1
+          fi
+          contracts="$(mktemp -d "$RUNNER_TEMP/audit-contracts.XXXXXXXX")"
+          python3 qualification/stage-contracts.py "$contracts"
+          printf 'FLOWAI_CONTRACT_FIXTURE_DIR=%s\n' "$contracts" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          go-version: '1.26.2'
+          cache: false
+
+      - name: Verify Go module and run unit tests
+        shell: bash
+        run: |
+          go mod verify
+          go test -mod=readonly -count=1 -coverpkg=./... -json ./...
+
+      - name: Run PostgreSQL integration tests and verify teardown
+        shell: bash
+        run: |
+          docker pull --platform linux/amd64 docker.io/library/postgres@sha256:a85daf0dbd5e79586e850e3fe4b21b796799828ad015ce2166aeb98cc24da61c
+          export FLOWAI_RESOURCE_LEDGER
+          FLOWAI_RESOURCE_LEDGER="$(mktemp "$RUNNER_TEMP/audit-postgres.XXXXXXXX")"
+          test_status=0
+          go test -mod=readonly -count=1 -tags=integration -json ./... || test_status=$?
+          selector="$(jq -ers 'select(length == 1) | .[0] | select(.kind == "containers") | .selector' "$FLOWAI_RESOURCE_LEDGER")"
+          [[ "$selector" =~ ^name=\^flowai-audit-[0-9a-f]+\$$ ]]
+          remaining="$(docker ps --all --quiet --filter "$selector")"
+          if [[ -n "$remaining" ]]; then
+            echo "PostgreSQL fixture still exists for $selector." >&2
+            exit 1
+          fi
+          echo "Verified PostgreSQL fixture absence for $selector."
+          exit "$test_status"
+
+      - name: Build untagged Linux image
+        shell: bash
+        run: |
+          docker build --platform linux/amd64 -f Containerfile --iidfile "$RUNNER_TEMP/audit.iid" .
+          cat "$RUNNER_TEMP/audit.iid"
