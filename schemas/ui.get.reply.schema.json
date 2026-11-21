@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flowai.local/schemas/audit/ui.get.reply.schema.json",
+  "title": "audit.ui.get reply (Audit)",
+  "description": "Success body (status 200) of audit.ui.get: the baseline Audit shape with integer identifiers. Administrator entries are never returned.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "audit_id",
+    "actor_id",
+    "actor_type",
+    "action",
+    "resource_type",
+    "resource_id",
+    "request_id",
+    "outcome",
+    "occurred_at"
+  ],
+  "properties": {
+    "audit_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "actor_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "actor_type": {
+      "const": "operator"
+    },
+    "action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resource_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resource_id": {
+      "description": "The target identifier, or null when the action had none (for example a rejected create or a list read).",
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775807
+    },
+    "outcome": {
+      "type": "string",
+      "minLength": 1
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "examples": [
+    {
+      "audit_id": 5120,
+      "actor_id": 12,
+      "actor_type": "operator",
+      "action": "flow_updated",
+      "resource_type": "flow",
+      "resource_id": 4,
+      "request_id": 7001,
+      "outcome": "succeeded",
+      "occurred_at": "2026-11-07T10:00:00Z"
+    }
+  ]
+}

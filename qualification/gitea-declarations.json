@@ -1,0 +1,225 @@
+{
+  "schemas": {
+    "svc/admin-panel/schemas/audit.tags-list.schema.json": [
+      "admin-panel",
+      "audit"
+    ],
+    "svc/admin-panel/schemas/audit.tasks-list.schema.json": [
+      "admin-panel",
+      "audit"
+    ],
+    "svc/admin-panel/schemas/audit.team-archive.schema.json": [
+      "admin-panel",
+      "audit"
+    ],
+    "svc/admin-panel/schemas/audit.team-create.schema.json": [
+      "admin-panel",
+      "audit"
+    ],
+    "svc/admin-panel/schemas/audit.team-get.schema.json": [
+      "admin-panel",
+      "audit"
+    ],
+    "svc/admin-panel/schemas/audit.team-update.schema.json": [
+      "admin-panel",
+      "audit"
+    ],
+    "svc/admin-panel/schemas/defs.schema.json": [
+      "admin-panel",
+      "audit"
+    ],
+    "svc/env-registry/schemas/audit.launch_parameter_revisions_listed.schema.json": [
+      "env-registry",
+      "audit"
+    ],
+    "svc/env-registry/schemas/audit.launch_parameters_created.schema.json": [
+      "env-registry",
+      "audit"
+    ],
+    "svc/env-registry/schemas/audit.launch_parameters_deleted.schema.json": [
+      "env-registry",
+      "audit"
+    ],
+    "svc/env-registry/schemas/audit.launch_parameters_read.schema.json": [
+      "env-registry",
+      "audit"
+    ],
+    "svc/env-registry/schemas/audit.launch_parameters_replaced.schema.json": [
+      "env-registry",
+      "audit"
+    ],
+    "svc/env-registry/schemas/audit.secret_created.schema.json": [
+      "env-registry",
+      "audit"
+    ],
+    "svc/env-registry/schemas/audit.secret_replaced.schema.json": [
+      "env-registry",
+      "audit"
+    ],
+    "svc/env-registry/schemas/audit.secret_revoked.schema.json": [
+      "env-registry",
+      "audit"
+    ],
+    "svc/env-registry/schemas/audit.secret_versions_listed.schema.json": [
+      "env-registry",
+      "audit"
+    ],
+    "svc/executor-registry/schemas/audit.executor_created.schema.json": [
+      "executor-registry",
+      "audit"
+    ],
+    "svc/executor-registry/schemas/audit.executor_deleted.schema.json": [
+      "executor-registry",
+      "audit"
+    ],
+    "svc/executor-registry/schemas/audit.executor_token_reissued.schema.json": [
+      "executor-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.admin-tags.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.flow-create.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.flow-get.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.flow-preview.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.flow-replace.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.flows-list.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.llm-settings-get.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.llm-settings-list.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.llm-settings-replace.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/audit.retire-alias.schema.json": [
+      "flow-registry",
+      "audit"
+    ],
+    "svc/flow-registry/schemas/defs.schema.json": [
+      "flow-registry",
+      "admin-panel",
+      "api-gateway",
+      "audit",
+      "env-registry",
+      "journal",
+      "model-registry",
+      "task-manager"
+    ],
+    "svc/model-registry/schemas/audit.model-archive.schema.json": [
+      "model-registry",
+      "audit"
+    ],
+    "svc/model-registry/schemas/audit.model-create.schema.json": [
+      "model-registry",
+      "audit"
+    ],
+    "svc/model-registry/schemas/audit.model-get.schema.json": [
+      "model-registry",
+      "audit"
+    ],
+    "svc/model-registry/schemas/audit.model-unarchive.schema.json": [
+      "model-registry",
+      "audit"
+    ],
+    "svc/model-registry/schemas/audit.model-update.schema.json": [
+      "model-registry",
+      "audit"
+    ],
+    "svc/model-registry/schemas/audit.models-list.schema.json": [
+      "model-registry",
+      "audit"
+    ],
+    "svc/model-registry/schemas/defs.schema.json": [
+      "model-registry",
+      "api-gateway",
+      "audit",
+      "executor_docker_openhands",
+      "executor_k8s_openhands",
+      "flow-registry",
+      "journal",
+      "task-manager"
+    ],
+    "svc/source-controller/schemas/audit.source_created.schema.json": [
+      "source-controller",
+      "audit"
+    ],
+    "svc/source-controller/schemas/audit.source_disabled.schema.json": [
+      "source-controller",
+      "audit"
+    ],
+    "svc/source-controller/schemas/audit.source_implementation_updated.schema.json": [
+      "source-controller",
+      "audit"
+    ],
+    "svc/source-controller/schemas/audit.source_key_rotated.schema.json": [
+      "source-controller",
+      "audit"
+    ],
+    "svc/source-controller/schemas/audit.source_polling_unblocked.schema.json": [
+      "source-controller",
+      "audit"
+    ],
+    "svc/source-controller/schemas/audit.source_settings_updated.schema.json": [
+      "source-controller",
+      "audit"
+    ],
+    "svc/task-manager/schemas/audit.admin-list-tasks.schema.json": [
+      "task-manager",
+      "audit"
+    ],
+    "svc/task-manager/schemas/audit.cancel.schema.json": [
+      "task-manager",
+      "audit"
+    ],
+    "svc/task-manager/schemas/defs.schema.json": [
+      "task-manager",
+      "admin-panel",
+      "api-gateway",
+      "audit",
+      "env-registry",
+      "executor-registry",
+      "executor_docker_openhands",
+      "executor_k8s_openhands",
+      "journal",
+      "model-registry",
+      "source-controller"
+    ],
+    "svc/team-registry/schemas/audit.team_archived.schema.json": [
+      "team-registry",
+      "audit"
+    ],
+    "svc/team-registry/schemas/audit.team_created.schema.json": [
+      "team-registry",
+      "audit"
+    ],
+    "svc/team-registry/schemas/audit.team_read.schema.json": [
+      "team-registry",
+      "audit"
+    ],
+    "svc/team-registry/schemas/audit.team_updated.schema.json": [
+      "team-registry",
+      "audit"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+# audit configuration: every key the service reads. Paths follow the
+# deployment runtime contract.
+db:
+  host: postgres
+  port: 5432
+  user: audit
+  password: change-me # or password_file: /run/flowai/db/password
+  # password_file: /run/flowai/db/password
+  name: flowai # default flowai
+  schema: audit_schema # default audit_schema
+  sslmode: verify-full # the only accepted value (default)
+  ca_file: /run/flowai/stand-ca/ca.pem
+nats:
+  url: tls://nats:4222
+  ca_file: /run/flowai/stand-ca/ca.pem
+  credentials_file: /run/flowai/nats/user.creds
+  inbox_prefix: _INBOX.audit # default _INBOX.audit
+  request_timeout: 5s # default 5s
+http:
+  listen: ":8080" # default :8080; serves /v1/livez and /v1/readyz only
+cursor_keys: # HMAC keys for list cursors; secrets are hex, at least 32 bytes
+  - id: 1
+    secret: "0000000000000000000000000000000000000000000000000000000000000000"
+    # secret_file: /run/flowai/audit/cursor-key-1
+active_cursor_key_id: 1
