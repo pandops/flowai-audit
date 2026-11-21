@@ -1,4 +1,4 @@
-name: Qualify Audit source
+name: Qualify Audit candidate
 run-name: Qualify audit at ${{ inputs.expected_source_sha }}
 
 on:
