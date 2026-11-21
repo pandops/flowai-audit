@@ -78,12 +78,9 @@ go test -mod=readonly -count=1 -tags=integration ./...
 
 The committed qualification manifests record which schemas the Gitea
 selector declares for Audit and the SHA-256 of each reviewed schema body.
-Supply an empty absolute directory to `python3 qualification/stage-contracts.py`
-and set the eight publisher commit environment variables listed in
-`.github/workflows/qualify.yml`. The script checks the exact public bytes,
-then places them under their original `svc/<publisher>/schemas/` paths.
-Point `FLOWAI_CONTRACT_FIXTURE_DIR` at that directory. The schema bodies
-stay outside the repository and build context.
+The workflow stages verified schema bodies under their original
+`svc/<publisher>/schemas/` paths in `FLOWAI_CONTRACT_FIXTURE_DIR`.
+The schema bodies stay outside the repository and build context.
 
 The dispatch workflow validates the selected Audit revision, stages the
 publisher contracts, runs the owned suites, checks teardown and builds an
