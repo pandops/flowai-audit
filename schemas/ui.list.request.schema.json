@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flowai.local/schemas/audit/ui.list.request.schema.json",
+  "title": "audit.ui.list request",
+  "description": "Request on audit.ui.list.pub (GET /ui/v1/teams/{team_id}/audit). Headers: team (decimal team_id), operator_id, request_id, optional team_name. limit outside 10/25/50/100 and a bad cursor are answered 400 invalid_pagination; other violations 400 invalid_request.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["params"],
+  "properties": {
+    "params": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "team_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9223372036854775807
+        },
+        "search": { "type": "string", "maxLength": 200 },
+        "cursor": { "type": "string", "maxLength": 2048 },
+        "limit": { "type": "integer", "enum": [10, 25, 50, 100], "default": 10 }
+      }
+    }
+  },
+  "examples": [{ "params": { "team_id": 3, "search": "flow", "limit": 25 } }]
+}

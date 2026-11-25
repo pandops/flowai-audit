@@ -1,0 +1,11 @@
+[
+  {
+    "durable": "audit",
+    "stream": "ALL_AUDIT",
+    "filter_subjects": ["*.audit.*.sub"],
+    "ack_policy": "explicit",
+    "ack_wait_seconds": 30,
+    "deliver_policy": "all",
+    "max_ack_pending": 256
+  }
+]
